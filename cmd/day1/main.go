@@ -14,22 +14,6 @@ func init() {
 	util.ReadLines(inputFilePath, util.ToIntSlice(&input))
 }
 
-func part1() uint64 {
-	// result is the result of multiplication of the two expenses
-	var result uint64
-
-	// add it to the set of expenses for constant lookup.
-	expenses := make(util.IntSet)
-	for _, expense := range input {
-		expenses[expense] = true
-		if expensePair := (2020 - expense); expenses[expensePair] {
-			result = expensePair * expense
-			break
-		}
-	}
-	return result
-}
-
 func main() {
 	// result is the result of multiplication of the two expenses
 	var resultPart1 uint64

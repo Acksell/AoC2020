@@ -24,7 +24,7 @@ func ReadLines(path string, callback func(string) error) error {
 	return nil
 }
 
-// ToIntSlice returns a function that takes a string and adds it to slice. Used in ReadFile.
+// ToIntSlice returns a function that takes a string and adds it to slice. Used in ReadLines.
 func ToIntSlice(slice *[]uint64) func(string) error {
 	storeInt := func(input string) error {
 		u64, err := strconv.ParseUint(input, 10, 64)

@@ -6,15 +6,18 @@ import (
 	"github.com/Acksell/aoc2020/util"
 )
 
-// Forest stores a slice of array of trees
-type Forest [][]bool
+// Trees is a slice representing where there are trees
+type Trees []bool
+
+// Forest is a slice of trees
+type Forest []Trees
 
 var forest Forest
 
 // ToForest returns a function that initializes trees to the forest given a string.
 func ToForest(forest *Forest) func(string) error {
 	toForest := func(s string) error {
-		trees := make([]bool, 31)
+		trees := make(Trees, 31)
 		for i, c := range s {
 			if c == '#' {
 				trees[i] = true

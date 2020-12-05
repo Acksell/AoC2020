@@ -12,32 +12,32 @@ const inputFilePath = "../../inputs/passports.txt"
 
 var required = util.NewStringSet("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
 
-func isValid(field string, data string) bool {
+func isValid(field string, value string) bool {
 	switch field {
 	case "cid":
 		return true
 	case "byr":
-		byr, _ := strconv.Atoi(data) // ignore error because data allows it this time.
-		return len(data) == 4 && byr >= 1920 && byr <= 2002
+		byr, _ := strconv.Atoi(value) // ignore error because data allows it this time.
+		return len(value) == 4 && byr >= 1920 && byr <= 2002
 	case "iyr":
-		iyr, _ := strconv.Atoi(data) // ignore error because data allows it this time.
-		return len(data) == 4 && iyr >= 2010 && iyr <= 2020
+		iyr, _ := strconv.Atoi(value) // ignore error because data allows it this time.
+		return len(value) == 4 && iyr >= 2010 && iyr <= 2020
 	case "eyr":
-		eyr, _ := strconv.Atoi(data) // ignore error because data allows it this time.
-		return len(data) == 4 && eyr >= 2020 && eyr <= 2030
+		eyr, _ := strconv.Atoi(value) // ignore error because data allows it this time.
+		return len(value) == 4 && eyr >= 2020 && eyr <= 2030
 	case "hgt":
-		hgt, _ := strconv.Atoi(data[:len(data)-2]) // ignore error because data allows it this time.
-		if data[len(data)-2:] == "cm" {
+		hgt, _ := strconv.Atoi(value[:len(value)-2]) // ignore error because data allows it this time.
+		if value[len(value)-2:] == "cm" {
 			return hgt >= 150 && hgt <= 193
 		} else {
 			return hgt >= 59 && hgt <= 76
 		}
 	case "hcl":
-		if data[0] != '#' {
+		if value[0] != '#' {
 			return false
 		}
 		accepted := util.NewStringSet("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f")
-		for _, c := range data[1:] {
+		for _, c := range value[1:] {
 			if !accepted[string(c)] {
 				return false
 			}
@@ -45,18 +45,18 @@ func isValid(field string, data string) bool {
 		return true
 	case "ecl":
 		accepted := util.NewStringSet("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
-		return accepted[data]
+		return accepted[value]
 	case "pid":
-		_, err := strconv.Atoi(data)
+		_, err := strconv.Atoi(value)
 		if err != nil {
 			return false
 		}
-		return len(data) == 9
+		return len(value) == 9
 	}
 	return true
 }
 
-// CountValidPassport increments a provided counter if it finds a valid passport.
+// CountValidPassport returns a function that increments a provided counter if it finds a valid passport.
 func CountValidPassport(nvalid *int, validate func(string, string) bool) func(string) error {
 	validated := 0
 	toCount := func(s string) error {

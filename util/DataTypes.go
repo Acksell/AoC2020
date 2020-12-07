@@ -43,6 +43,12 @@ type Edge struct {
 	Weight int
 }
 
+// WEdge is a weighted directed edge from node `From` to `To`
+// type WEdge struct {
+// 	Edge
+// 	Weight int
+// }
+
 // Node is a node in a graph.
 type Node struct {
 	ID  string
@@ -71,12 +77,13 @@ func NewEdge(n1 *Node, n2 *Node, weight int) Edge {
 // 	return WEdge{e, weight}
 // }
 
-// AddOutgoing adds an outgoing node and returns the modified input.
-func (n *Node) AddOutgoing(n2 Node, weight int) Node {
+// AddOutgoing adds an outgoing node and returns the modified inputs.
+func (n Node) AddOutgoing(n2 Node, weight int) (Node, Node) {
 	new := Node{n2.ID, n2.In, n2.Out} // n2 -> new.
-	new.In[n.ID] = NewEdge(&new, n, weight)
-	n.Out[new.ID] = NewEdge(n, &new, weight) //
-	return Node{new.ID, new.In, new.Out}
+	new.In[n.ID] = NewEdge(&new, &n, weight)
+	n.Out[new.ID] = NewEdge(&n, &new, weight)
+	// return this node and the new added node. (with properties updated)
+	return n, Node{new.ID, new.In, new.Out}
 }
 
 // SumWeightOut Returns the outgoing sum of the weights from a node.
@@ -114,9 +121,9 @@ func (n Node) String() string {
 	var sin []string
 	var sout []string
 	s := n.ID
-	// for _, in := range n.In {
-	// 	sin = append(sin, in.To.ID)
-	// }
+	for _, in := range n.In {
+		sin = append(sin, in.To.ID)
+	}
 	for _, out := range n.Out {
 		sout = append(sout, out.To.ID)
 	}

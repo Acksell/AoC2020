@@ -2,8 +2,11 @@ package util
 
 import "fmt"
 
+// Int64Set is a set of integers.
+type Int64Set map[uint64]bool
+
 // IntSet is a set of integers.
-type IntSet map[uint64]bool
+type IntSet map[int]bool
 
 // StringSet is a set of strings.
 type StringSet map[string]bool

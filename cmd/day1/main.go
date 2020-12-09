@@ -20,7 +20,7 @@ func main() {
 	var resultPart2 uint64
 
 	// add it to the set of expenses for constant lookup.
-	expenses := make(util.IntSet)
+	expenses := make(util.Int64Set)
 	differences := make([]uint64, 0)
 	for _, expense := range input {
 		expenses[expense] = true

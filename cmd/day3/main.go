@@ -14,25 +14,22 @@ type Forest []Trees
 
 var forest Forest
 
-// ToForest returns a function that initializes trees to the forest given a string.
-func ToForest(forest *Forest) func(string) error {
-	toForest := func(s string) error {
-		trees := make(Trees, 31)
-		for i, c := range s {
-			if c == '#' {
-				trees[i] = true
-			}
+// Load initializes trees to the forest given a string.
+func (forest *Forest) Load(s string) error {
+	trees := make(Trees, 31)
+	for i, c := range s {
+		if c == '#' {
+			trees[i] = true
 		}
-		*forest = append(*forest, trees)
-		return nil
 	}
-	return toForest
+	*forest = append(*forest, trees)
+	return nil
 }
 
 const inputFilePath = "../../inputs/forest.txt"
 
 func init() {
-	util.ReadLines(inputFilePath, ToForest(&forest))
+	util.ReadLines(inputFilePath, &forest)
 }
 
 func traverse(right int, down int) int {

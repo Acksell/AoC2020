@@ -29,9 +29,8 @@ func isValid(field string, value string) bool {
 		hgt, _ := strconv.Atoi(value[:len(value)-2]) // ignore error because data allows it this time.
 		if value[len(value)-2:] == "cm" {
 			return hgt >= 150 && hgt <= 193
-		} else {
-			return hgt >= 59 && hgt <= 76
 		}
+		return hgt >= 59 && hgt <= 76
 	case "hcl":
 		if value[0] != '#' {
 			return false
@@ -56,38 +55,43 @@ func isValid(field string, value string) bool {
 	return true
 }
 
-// CountValidPassport returns a function that increments a provided counter if it finds a valid passport.
-func CountValidPassport(nvalid *int, validate func(string, string) bool) func(string) error {
-	validated := 0
-	toCount := func(s string) error {
-		if len(s) != 0 { // if not blank line, check data.
-			linecontent := strings.Split(s, " ")
-			for _, data := range linecontent {
-				field := data[0:3]
-				if required[field] { // only validate required fields.
-					if validate(field, data[4:]) { // data[4:] is everything after the colon.
-						validated++
-					}
+// ValidCounter represent a counter. Type implements Loadable.
+type ValidCounter struct {
+	validated1 int
+	validated2 int
+	part1      int
+	part2      int
+}
+
+// Load returns a function that increments a provided counter if it finds a valid passport.
+func (c *ValidCounter) Load(s string) error {
+	if len(s) != 0 { // if not blank line, check data.
+		linecontent := strings.Split(s, " ")
+		for _, data := range linecontent {
+			field := data[0:3]
+			if required[field] { // only validate required fields.
+				c.validated1++
+				if isValid(field, data[4:]) { // data[4:] is everything after the colon.
+					c.validated2++
 				}
 			}
-		} else { // blank line <=> new passport. reset `validated` and increment count if 7 fields valid.
-			if validated == 7 {
-				*nvalid++
-			}
-			validated = 0
 		}
-		return nil
+	} else { // blank line <=> new passport. reset `validated` and increment count if 7 fields valid.
+		if c.validated1 == 7 {
+			c.part1++
+		}
+		if c.validated2 == 7 {
+			c.part2++
+		}
+		c.validated1 = 0
+		c.validated2 = 0
 	}
-	return toCount
+	return nil
 }
 
 func main() {
-	nvalid1 := 0
-	nvalid2 := 0
-	// dont care about restrictions on data in part1.
-	isValidPart1 := func(_ string, _ string) bool { return true }
-	util.ReadLines(inputFilePath, CountValidPassport(&nvalid1, isValidPart1))
-	util.ReadLines(inputFilePath, CountValidPassport(&nvalid2, isValid))
-	fmt.Println(nvalid1)
-	fmt.Println(nvalid2)
+	c := ValidCounter{}
+	util.ReadLines(inputFilePath, &c)
+	fmt.Println(c.part1)
+	fmt.Println(c.part2)
 }

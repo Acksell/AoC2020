@@ -50,25 +50,26 @@ func NewPassword(s string) (Password, error) {
 	return Password{min, max, char, pwd}, nil
 }
 
-// ToPwdSlice returns a function that takes a string, constructs a Password object and appends it to slice. Used in ReadLines.
-func ToPwdSlice(slice *[]Password) func(string) error {
-	storePwd := func(input string) error {
-		pwd, err := NewPassword(input)
-		if err != nil {
-			return err
-		}
-		*slice = append(*slice, pwd)
-		return nil
+// Passwords is a list of passwords.
+type Passwords []Password
+
+// Load constructs a Password object and appends it to Passwords. Used in ReadLines.
+func (slice *Passwords) Load(input string) error {
+	pwd, err := NewPassword(input)
+	if err != nil {
+		return err
 	}
-	return storePwd
+	*slice = append(*slice, pwd)
+	return nil
+
 }
 
 const inputFilePath = "../../inputs/passwords.txt"
 
-var passwords = make([]Password, 0, 100)
+var passwords = make(Passwords, 0, 100)
 
 func init() {
-	util.ReadLines(inputFilePath, ToPwdSlice(&passwords))
+	util.ReadLines(inputFilePath, &passwords)
 }
 
 func main() {

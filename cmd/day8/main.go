@@ -88,13 +88,9 @@ func (s *State) Execute() {
 }
 
 // Load some instructions from a file.
-func (c *Code) Load(filePath string) error {
-	load := func(s string) error {
-		instr, err := ParseInstruction(s)
-		*c = append(*c, instr)
-		return err
-	}
-	err := util.ReadLines(inputFilePath, load)
+func (c *Code) Load(s string) error {
+	instr, err := ParseInstruction(s)
+	*c = append(*c, instr)
 	return err
 }
 
@@ -106,7 +102,8 @@ const inputFilePath = "../../inputs/boot_code.txt"
 
 func main() {
 	code := make(Code, 0)
-	code.Load(inputFilePath)
+	util.ReadLines(inputFilePath, &code)
+
 	state := NewState(code)
 	state.Execute()
 	linesRead := make(util.IntSet)

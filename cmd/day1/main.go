@@ -2,16 +2,29 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/Acksell/aoc2020/util"
 )
 
 const inputFilePath = "../../inputs/expense_report.txt"
 
-var input = make([]uint64, 0)
+type Int64Slice []uint64
+
+// Load the input to an Int64Slice
+func (i *Int64Slice) Load(input string) error {
+	u64, err := strconv.ParseUint(input, 10, 64)
+	if err != nil {
+		return err
+	}
+	*i = append(*i, u64)
+	return nil
+}
+
+var input = make(Int64Slice, 0)
 
 func init() {
-	util.ReadLines(inputFilePath, util.ToIntSlice(&input))
+	util.ReadLines(inputFilePath, &input)
 }
 
 func main() {

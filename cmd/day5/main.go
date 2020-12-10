@@ -32,21 +32,21 @@ func NewAirplaneSeat(s string) (AirplaneSeat, error) {
 	return AirplaneSeat{int(row), int(col)}, err
 }
 
-func toSeatIDs(seatIDs *[]int) func(string) error {
-	toIDs := func(s string) error {
-		seat, err := NewAirplaneSeat(s)
-		if err != nil {
-			return err
-		}
-		*seatIDs = append(*seatIDs, seat.getSeatID())
-		return nil
+type IDs []int
+
+// Load airplane seat IDs to a slice.
+func (seatIDs *IDs) Load(s string) error {
+	seat, err := NewAirplaneSeat(s)
+	if err != nil {
+		return err
 	}
-	return toIDs
+	*seatIDs = append(*seatIDs, seat.getSeatID())
+	return nil
 }
 
 func main() {
-	seatIDs := make([]int, 100)
-	util.ReadLines(inputFilePath, toSeatIDs(&seatIDs))
+	seatIDs := make(IDs, 100)
+	util.ReadLines(inputFilePath, &seatIDs)
 	sort.Ints(seatIDs)
 	fmt.Println(seatIDs[len(seatIDs)-1]) // part 1.
 	for i, id := range seatIDs {

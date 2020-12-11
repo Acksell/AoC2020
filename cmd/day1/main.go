@@ -2,26 +2,13 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/Acksell/aoc2020/util"
 )
 
 const inputFilePath = "../../inputs/expense_report.txt"
 
-type Int64Slice []uint64
-
-// Load the input to an Int64Slice
-func (i *Int64Slice) Load(input string) error {
-	u64, err := strconv.ParseUint(input, 10, 64)
-	if err != nil {
-		return err
-	}
-	*i = append(*i, u64)
-	return nil
-}
-
-var input = make(Int64Slice, 0)
+var input = make(util.IntSlice, 0)
 
 func init() {
 	util.ReadLines(inputFilePath, &input)
@@ -29,12 +16,12 @@ func init() {
 
 func main() {
 	// result is the result of multiplication of the two expenses
-	var resultPart1 uint64
-	var resultPart2 uint64
+	var resultPart1 int
+	var resultPart2 int
 
 	// add it to the set of expenses for constant lookup.
-	expenses := make(util.Int64Set)
-	differences := make([]uint64, 0)
+	expenses := make(util.IntSet)
+	differences := make([]int, 0)
 	for _, expense := range input {
 		expenses[expense] = true
 		expensePair := (2020 - expense)

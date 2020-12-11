@@ -1,6 +1,9 @@
 package util
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 // Int64Set is a set of integers.
 type Int64Set map[uint64]bool
@@ -10,6 +13,19 @@ type IntSet map[int]bool
 
 // StringSet is a set of strings.
 type StringSet map[string]bool
+
+// IntSlice is a slice of ints with a Load function.
+type IntSlice []int
+
+// Load the input to an Int64Slice
+func (i *IntSlice) Load(input string) error {
+	v, err := strconv.Atoi(input)
+	if err != nil {
+		return err
+	}
+	*i = append(*i, v)
+	return nil
+}
 
 // NewStringSet returns a set of the provided strings.
 func NewStringSet(set ...string) StringSet {

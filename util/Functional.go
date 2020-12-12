@@ -19,3 +19,13 @@ func Min(ints []int) int {
 	}
 	return min
 }
+
+func Count(ints []int, target int) int {
+	c := 0
+	for _, v := range ints {
+		if v == target {
+			c++
+		}
+	}
+	return c
+}

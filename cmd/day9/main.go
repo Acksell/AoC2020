@@ -77,6 +77,8 @@ func main() {
 	found, contiguous := FindContiguous(ints, 40, i)
 	if found {
 		// print part 2 answer.
-		fmt.Println(util.Max(contiguous) + util.Min(contiguous))
+		max, _ := util.Max(contiguous)
+		min, _ := util.Min(contiguous)
+		fmt.Println(max + min)
 	}
 }

@@ -16,6 +16,7 @@ type StringSet map[string]bool
 
 // IntSlice is a slice of ints with a Load function.
 type IntSlice []int
+type StringSlice []string
 
 // Load the input to an Int64Slice
 func (i *IntSlice) Load(input string) error {
@@ -24,6 +25,12 @@ func (i *IntSlice) Load(input string) error {
 		return err
 	}
 	*i = append(*i, v)
+	return nil
+}
+
+// Load the input to an Int64Slice
+func (ss *StringSlice) Load(input string) error {
+	*ss = append(*ss, input)
 	return nil
 }
 

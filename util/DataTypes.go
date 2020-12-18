@@ -5,6 +5,19 @@ import (
 	"strconv"
 )
 
+type Stack []int
+
+func (s *Stack) Pop() int {
+	n := len(*s) - 1
+	current := (*s)[n]
+	(*s) = (*s)[:n] // remove last
+	return current
+}
+
+func (s *Stack) Push(i int) {
+	*s = append(*s, i)
+}
+
 // Int64Set is a set of integers.
 type Int64Set map[uint64]bool
 

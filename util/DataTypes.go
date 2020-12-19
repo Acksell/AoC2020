@@ -18,6 +18,10 @@ func (s *Stack) Push(i int) {
 	*s = append(*s, i)
 }
 
+func (s Stack) Top() int {
+	return s[len(s)-1]
+}
+
 // Int64Set is a set of integers.
 type Int64Set map[uint64]bool
 
